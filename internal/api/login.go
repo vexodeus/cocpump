@@ -1,14 +1,9 @@
-package main
+package api
 
 import (
 	"encoding/json"
 
 	resty "github.com/go-resty/resty/v2"
-)
-
-const (
-	BaseUrl       = "https://developer.clashofclans.com"
-	LoginEndpoint = "/api/login"
 )
 
 type LoginBody struct {

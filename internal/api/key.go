@@ -1,12 +1,10 @@
-package main
+package api
 
 import (
 	"encoding/json"
 
 	resty "github.com/go-resty/resty/v2"
 )
-
-const KeyListEndpoint = "/api/apikey/list"
 
 type KeyResponse struct {
 	Status                  Status `json:"status"`
