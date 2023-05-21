@@ -29,3 +29,29 @@ func deleteAccountByID(id int, db *sql.DB) error {
 	}
 	return nil
 }
+func getAccountsByID(id int, db *sql.DB) ([]*Account, error) {
+	accounts := []*Account{}
+	rows, err := db.Query(getAccountByIDQuery, id)
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+		acc := &Account{}
+		rows.Scan(acc.ID, acc.Email, acc.Password)
+		accounts = append(accounts, acc)
+	}
+	return accounts, nil
+}
+func getAccountsByEmail(email string, db *sql.DB) ([]*Account, error) {
+	accounts := []*Account{}
+	rows, err := db.Query(getAccountByEmailQuery, email)
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+		acc := &Account{}
+		rows.Scan(acc.ID, acc.Email, acc.Password)
+		accounts = append(accounts, acc)
+	}
+	return accounts, nil
+}
