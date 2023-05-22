@@ -8,7 +8,7 @@ type Account struct {
 	Password string
 }
 
-func insertAccount(account *Account, db *sql.DB) error {
+func insertAccount(account Account, db *sql.DB) error {
 	_, err := db.Exec(insertAccountQuery, account.ID, account.Email, account.Password)
 	if err != nil {
 		return err
@@ -31,7 +31,7 @@ func deleteAccountByID(id int, db *sql.DB) error {
 }
 func getAccountsByID(id int, db *sql.DB) ([]*Account, error) {
 	accounts := []*Account{}
-	rows, err := db.Query(getAccountByIDQuery, id)
+	rows, err := db.Query(getAccountsByIDQuery, id)
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +44,7 @@ func getAccountsByID(id int, db *sql.DB) ([]*Account, error) {
 }
 func getAccountsByEmail(email string, db *sql.DB) ([]*Account, error) {
 	accounts := []*Account{}
-	rows, err := db.Query(getAccountByEmailQuery, email)
+	rows, err := db.Query(getAccountsByEmailQuery, email)
 	if err != nil {
 		return nil, err
 	}
