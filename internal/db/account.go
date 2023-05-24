@@ -55,3 +55,17 @@ func getAccountsByEmail(email string, db *sql.DB) ([]*Account, error) {
 	}
 	return accounts, nil
 }
+func updateAccountByID(account Account, db *sql.DB) error {
+	_, err := db.Exec(updateAccountByIDQuery, account.ID, account.Email, account.Password)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+func updateAccountByEmail(account Account, db *sql.DB) error {
+	_, err := db.Exec(updateAccountByEmailQuery, account.ID, account.Email, account.Password)
+	if err != nil {
+		return err
+	}
+	return nil
+}
