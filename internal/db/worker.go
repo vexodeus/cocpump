@@ -2,20 +2,19 @@ package db
 
 import (
 	"context"
-	"database/sql"
 )
 
 type Worker struct {
 	ID     int
-	DB     *sql.DB
+	Pool   *Pool
 	Input  chan *Task
 	Output chan *Task
 }
 
-func NewWorker(id int, db *sql.DB) *Worker {
+func NewWorker(id int, pool *Pool) *Worker {
 	return &Worker{
-		ID: id,
-		DB: db,
+		ID:   id,
+		Pool: pool,
 	}
 }
 func (w *Worker) Start(ctx context.Context) {
@@ -39,7 +38,7 @@ func (w *Worker) Process(task *Task) (*Task, error) {
 		switch subject := task.Data.(type) {
 		//
 		case Account:
-			err = insertAccount(subject, w.DB)
+			err = insertAccount(subject, w.Pool.DB)
 			if err != nil {
 				return nil, err
 			}
@@ -50,11 +49,11 @@ func (w *Worker) Process(task *Task) (*Task, error) {
 		switch subject := task.Data.(type) {
 		//
 		case Account:
-			err = deleteAccountByID(subject.ID, w.DB)
+			err = deleteAccountByID(subject.ID, w.Pool.DB)
 			if err != nil {
 				return nil, err
 			}
-			// err = deleteAccountByEmail(subject.Email, w.DB)
+			// err = deleteAccountByEmail(subject.Email, w.Pool.DB)
 			// if err != nil {
 			// 	return nil, err
 			// }
@@ -65,11 +64,11 @@ func (w *Worker) Process(task *Task) (*Task, error) {
 		switch subject := task.Data.(type) {
 		//
 		case Account:
-			data, err := getAccountsByID(subject.ID, w.DB)
+			data, err := getAccountsByID(subject.ID, w.Pool.DB)
 			if err != nil {
 				return nil, err
 			}
-			// data, err = getAccountsByEmail(subject.Email, w.DB)
+			// data, err = getAccountsByEmail(subject.Email, w.Pool.DB)
 			// if err != nil {
 			// 	return nil, err
 			// }
