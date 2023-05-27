@@ -18,6 +18,7 @@ func NewWorker(id int, pool *Pool) *Worker {
 	}
 }
 func (w *Worker) Start(ctx context.Context) {
+	defer w.Pool.WG.Done()
 	for {
 		select {
 		case task := <-w.Input:
@@ -77,6 +78,17 @@ func (w *Worker) Process(task *Task) (*Task, error) {
 		//
 	//
 	case TASK_TYPE_UPDATE:
+		switch subject := task.Data.(type) {
+		case Account:
+			err = updateAccountByID(subject, w.Pool.DB)
+			if err != nil {
+				return nil, err
+			}
+			// err = updateAccountByEmail(subject, w.Pool.DB)
+			// if err != nil {
+			// 	return nil, err
+			// }
+		}
 		//
 	}
 	return task, nil
