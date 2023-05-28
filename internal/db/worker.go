@@ -1,6 +1,7 @@
 package db
 
 import (
+	"cocpump/pkg/coc"
 	"context"
 )
 
@@ -38,7 +39,7 @@ func (w *Worker) Process(task *Task) (*Task, error) {
 	case TASK_TYPE_INSERT:
 		switch subject := task.Data.(type) {
 		//
-		case Account:
+		case coc.Account:
 			err = insertAccount(subject, w.Pool.DB)
 			if err != nil {
 				return nil, err
@@ -49,7 +50,7 @@ func (w *Worker) Process(task *Task) (*Task, error) {
 	case TASK_TYPE_DELETE:
 		switch subject := task.Data.(type) {
 		//
-		case Account:
+		case coc.Account:
 			err = deleteAccountByID(subject.ID, w.Pool.DB)
 			if err != nil {
 				return nil, err
@@ -64,7 +65,7 @@ func (w *Worker) Process(task *Task) (*Task, error) {
 	case TASK_TYPE_GET:
 		switch subject := task.Data.(type) {
 		//
-		case Account:
+		case coc.Account:
 			data, err := getAccountsByID(subject.ID, w.Pool.DB)
 			if err != nil {
 				return nil, err
@@ -79,7 +80,7 @@ func (w *Worker) Process(task *Task) (*Task, error) {
 	//
 	case TASK_TYPE_UPDATE:
 		switch subject := task.Data.(type) {
-		case Account:
+		case coc.Account:
 			err = updateAccountByID(subject, w.Pool.DB)
 			if err != nil {
 				return nil, err

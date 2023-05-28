@@ -6,20 +6,6 @@ import (
 	resty "github.com/go-resty/resty/v2"
 )
 
-type KeyResponse struct {
-	Status                  Status `json:"status"`
-	SessionExpiresInSeconds int    `json:"sessionExpiresInSeconds"`
-	Key                     Key    `json:"key"`
-}
-
-type Key struct {
-	ID          string   `json:"id"`
-	Name        string   `json:"name"`
-	Description string   `json:"description"`
-	Cidrranges  []string `json:"cidrRanges"`
-	Key         string   `json:"key"`
-}
-
 func getKeys(email string, password string, client *resty.Client) (*KeyResponse, error) {
 	//
 	loginResponse, err := login(email, password, client)

@@ -1,14 +1,11 @@
 package db
 
-import "database/sql"
+import (
+	"cocpump/pkg/coc"
+	"database/sql"
+)
 
-type Account struct {
-	ID       int
-	Email    string
-	Password string
-}
-
-func insertAccount(account Account, db *sql.DB) error {
+func insertAccount(account coc.Account, db *sql.DB) error {
 	_, err := db.Exec(insertAccountQuery, account.ID, account.Email, account.Password)
 	if err != nil {
 		return err
@@ -29,40 +26,40 @@ func deleteAccountByID(id int, db *sql.DB) error {
 	}
 	return nil
 }
-func getAccountsByID(id int, db *sql.DB) ([]*Account, error) {
-	accounts := []*Account{}
+func getAccountsByID(id int, db *sql.DB) ([]*coc.Account, error) {
+	accounts := []*coc.Account{}
 	rows, err := db.Query(getAccountsByIDQuery, id)
 	if err != nil {
 		return nil, err
 	}
 	for rows.Next() {
-		acc := &Account{}
+		acc := &coc.Account{}
 		rows.Scan(acc.ID, acc.Email, acc.Password)
 		accounts = append(accounts, acc)
 	}
 	return accounts, nil
 }
-func getAccountsByEmail(email string, db *sql.DB) ([]*Account, error) {
-	accounts := []*Account{}
+func getAccountsByEmail(email string, db *sql.DB) ([]*coc.Account, error) {
+	accounts := []*coc.Account{}
 	rows, err := db.Query(getAccountsByEmailQuery, email)
 	if err != nil {
 		return nil, err
 	}
 	for rows.Next() {
-		acc := &Account{}
+		acc := &coc.Account{}
 		rows.Scan(acc.ID, acc.Email, acc.Password)
 		accounts = append(accounts, acc)
 	}
 	return accounts, nil
 }
-func updateAccountByID(account Account, db *sql.DB) error {
+func updateAccountByID(account coc.Account, db *sql.DB) error {
 	_, err := db.Exec(updateAccountByIDQuery, account.ID, account.Email, account.Password)
 	if err != nil {
 		return err
 	}
 	return nil
 }
-func updateAccountByEmail(account Account, db *sql.DB) error {
+func updateAccountByEmail(account coc.Account, db *sql.DB) error {
 	_, err := db.Exec(updateAccountByEmailQuery, account.ID, account.Email, account.Password)
 	if err != nil {
 		return err
